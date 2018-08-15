@@ -7,6 +7,7 @@ import { Layout, Button, Menu, Icon } from 'antd';
 interface IProps {}
 interface IState {}
 
+@inject('appStore', 'i18nStore')
 @observer
 class Main extends React.Component<IProps, IState> {
   @observable name = '';

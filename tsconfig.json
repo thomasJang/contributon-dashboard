@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "outDir": ".tsOutput",
-    "module": "commonjs",
+    "outDir": "build/dist",
+    "module": "esnext",
     "target": "es5",
-    "lib": ["dom", "es2015", "es2016", "es2017", "es2018", "esnext"],
+    "lib": ["dom", "es5", "es2015", "es2016", "es2017", "es2018", "esnext"],
     "sourceMap": true,
     "allowJs": true,
     "jsx": "react",
@@ -14,13 +14,22 @@
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noImplicitAny": true,
-    "strictNullChecks": true,
+    // "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
+    //"noUnusedLocals": true,
+    "noFallthroughCasesInSwitch": true,
+    // "noUnusedParameters": false,
     "experimentalDecorators": true,
     "downlevelIteration": true,
-    "plugins": [{ "name": "typescript-styled-plugin" }]
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "alwaysStrict": true,
+    "stripInternal": true,
+    "plugins": [
+      {
+        "name": "typescript-styled-plugin"
+      }
+    ]
   },
   "exclude": [
     "node_modules",
@@ -29,6 +38,6 @@
     "acceptance-tests",
     "webpack",
     "jest",
-    "dist"
+    "src/setupTests.ts"
   ]
 }
