@@ -1,5 +1,6 @@
 import { types, getSnapshot, applySnapshot, flow } from 'mobx-state-tree';
 import ApiProvider from '../providers/ApiProvider';
+import GitStore from './GitStore';
 
 const AlertMessage = types.model('Alert', {
   message: types.string,
@@ -16,16 +17,25 @@ export interface IAlertMessage extends IAlertMessageType {}
 
 export const AppStore = types
   .model('AppStore', {
+    gitStore: types.optional(GitStore, { projects: [], log: [] }),
     spinning: types.boolean,
     spinningTip: types.string,
     alertMessages: types.array(AlertMessage),
     loaded: types.boolean,
   })
   .actions(self => {
+    /*
     const init = flow(function*() {
+      yield self.gitStore.init();
       self.loaded = true;
       return {};
     });
+    */
+    const init = function() {
+      self.gitStore.init();
+      self.loaded = true;
+      return {};
+    };
 
     function setSpinning(value: boolean, tip?: string) {
       self.spinning = value;
