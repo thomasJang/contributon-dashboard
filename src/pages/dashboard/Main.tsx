@@ -2,9 +2,40 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { action, computed, observable } from 'mobx';
 import { inject, observer } from 'mobx-react';
-import { Layout, Button, Menu, Icon } from 'antd';
+import { Layout, Button, Menu, Icon, Card, Row, Col } from 'antd';
+import styled from 'styled-components';
 
-interface IProps {}
+const StyledLayoutContent = styled(Layout.Content)`
+  height: 100vh;
+  padding: 2vh;
+`;
+
+const PaddedCol = styled(Col as any)`
+  padding: 1vh;
+`;
+
+const Project = styled.div`
+  height: 22vh;
+  background: #fff;
+  padding: 20px;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+`;
+
+const StyledLayoutSider = styled(Layout.Sider)`
+  background: #002140;
+  padding: 20px;
+  h2 {
+    color: #fff;
+  }
+`;
+
+import { IAppStore } from 'stores/AppStore';
+import { II18nStore } from 'stores/I18nStore';
+
+interface IProps {
+  appStore?: IAppStore;
+  i18nStore?: II18nStore;
+}
 interface IState {}
 
 @inject('appStore', 'i18nStore')
@@ -13,75 +44,31 @@ class Main extends React.Component<IProps, IState> {
   @observable name = '';
 
   render() {
+    const { appStore } = this.props;
+    const { gitStore } = appStore;
+    const { projects, log } = gitStore;
+
     return (
       <Layout>
         <Layout>
-          <Layout.Content>
-            {this.name}
-            <Button
-              onClick={() => {
-                this.name = 'Thomas Jang';
-              }}
-            >
-              set Name
-            </Button>
-            <Button
-              onClick={() => {
-                this.name = '';
-              }}
-            >
-              clear Name
-            </Button>
-          </Layout.Content>
+          <StyledLayoutContent>
+            <Row>
+              {projects.map((n, nidx) => {
+                return (
+                  <PaddedCol key={nidx} xs={24} lg={12} xl={6} xxl={6}>
+                    <Project>
+                      <h3>{n.projectName}</h3>
+                      <p>{n.Repository}</p>
+                    </Project>
+                  </PaddedCol>
+                );
+              })}
+            </Row>
+          </StyledLayoutContent>
         </Layout>
-        <Layout.Sider width={400} style={{ background: '#fff' }}>
-          <Menu
-            mode="inline"
-            defaultSelectedKeys={['1']}
-            defaultOpenKeys={['sub1']}
-            style={{ height: '100%' }}
-          >
-            <Menu.SubMenu
-              key="sub1"
-              title={
-                <span>
-                  <Icon type="user" />subnav 1
-                </span>
-              }
-            >
-              <Menu.Item key="1">option1</Menu.Item>
-              <Menu.Item key="2">option2</Menu.Item>
-              <Menu.Item key="3">option3</Menu.Item>
-              <Menu.Item key="4">option4</Menu.Item>
-            </Menu.SubMenu>
-            <Menu.SubMenu
-              key="sub2"
-              title={
-                <span>
-                  <Icon type="laptop" />subnav 2
-                </span>
-              }
-            >
-              <Menu.Item key="5">option5</Menu.Item>
-              <Menu.Item key="6">option6</Menu.Item>
-              <Menu.Item key="7">option7</Menu.Item>
-              <Menu.Item key="8">option8</Menu.Item>
-            </Menu.SubMenu>
-            <Menu.SubMenu
-              key="sub3"
-              title={
-                <span>
-                  <Icon type="notification" />subnav 3
-                </span>
-              }
-            >
-              <Menu.Item key="9">option9</Menu.Item>
-              <Menu.Item key="10">option10</Menu.Item>
-              <Menu.Item key="11">option11</Menu.Item>
-              <Menu.Item key="12">option12</Menu.Item>
-            </Menu.SubMenu>
-          </Menu>
-        </Layout.Sider>
+        <StyledLayoutSider width={400}>
+          <h2>Events</h2>
+        </StyledLayoutSider>
       </Layout>
     );
   }

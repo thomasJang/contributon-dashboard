@@ -10,6 +10,7 @@ export const Log = types.model('Log', {
 export const Project = types.model('Project', {
   projectId: types.string,
   projectName: types.string,
+  Repository: types.string,
   commit: types.number,
   issue: types.number,
 });
@@ -135,8 +136,8 @@ const projectList = [
   },
 ];
 
-const ProjectStore = types
-  .model('UserStore', {
+const GitStore = types
+  .model('GitStore', {
     projects: types.optional(types.array(Project), []),
     log: types.optional(types.array(Log), []),
   })
@@ -147,7 +148,9 @@ const ProjectStore = types
         content: 'first commit',
       });
 
-      self.projects = projectList as any;
+      projectList.forEach((p: IProject) => {
+        self.projects.push(p);
+      });
 
       return {};
     };
@@ -157,7 +160,7 @@ const ProjectStore = types
     };
   });
 
-type IProjectStoreType = typeof ProjectStore.Type;
-export interface IProjectStore extends IProjectStoreType {}
+type IGitStoreType = typeof GitStore.Type;
+export interface IGitStore extends IGitStoreType {}
 
-export default ProjectStore;
+export default GitStore;
